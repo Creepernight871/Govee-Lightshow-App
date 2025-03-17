@@ -18,7 +18,7 @@ async def run_explode(govee_device, params, is_animating_flag, animation_duratio
                 distance_from_center = abs(i - center)
                 if (num_segments - 1 - distance_from_center) < progress:
                     segment_colors[i] = color
-            await govee_device.set_segments_color(segment_colors)
+            await govee_device.set_segment_color_rgb(segment_colors)
             await asyncio.sleep(interval)
     except asyncio.CancelledError:
         pass
