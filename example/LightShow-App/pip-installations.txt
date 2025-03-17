@@ -1,0 +1,8 @@
+You must Install these imports to run this program:
+
+1. PyQt6
+2. qasync
+3. govee-local-api
+4. librosa
+5. simpleaudio
+6. gumpy
