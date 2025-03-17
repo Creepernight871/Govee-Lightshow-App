@@ -7,6 +7,8 @@ from qasync import asyncSlot
 import asyncio
 import govee_local_api
 from Controls import ColorControls  # Assuming ColorControls is in the same directory or package
+import animations
+from animations import pulse, segmentPulse, wave, implode, explode, breath
 
 class ColorControls(QWidget):
     def __init__(self, label="Color", initial_color="255,255,255", parent=None):
@@ -332,19 +334,68 @@ class AnimationControls(QWidget):
             animation_type = params['type']
             self.animation_duration = params['duration']
             self.animation_start_time = asyncio.get_event_loop().time()
+            params['segment_count'] = self.segment_count # Pass segment count to animation functions
 
             if animation_type == "Pulse":
-                asyncio.create_task(self.run_pulse_animation(params))
+                self.animation_task = asyncio.create_task(
+                    pulse_animation.run_pulse(
+                        self.govee_device,
+                        params,
+                        lambda: self.is_animating,
+                        self.animation_duration,
+                        self.animation_start_time,
+                    )
+                )
             elif animation_type == "Wave":
-                asyncio.create_task(self.run_wave_animation(params))
+                self.animation_task = asyncio.create_task(
+                    wave_animation.run_wave(
+                        self.govee_device,
+                        params,
+                        lambda: self.is_animating,
+                        self.animation_duration,
+                        self.animation_start_time,
+                    )
+                )
             elif animation_type == "Implode":
-                asyncio.create_task(self.run_implode_animation(params))
+                self.animation_task = asyncio.create_task(
+                    implode_animation.run_implode(
+                        self.govee_device,
+                        params,
+                        lambda: self.is_animating,
+                        self.animation_duration,
+                        self.animation_start_time,
+                    )
+                )
             elif animation_type == "Explode":
-                asyncio.create_task(self.run_explode_animation(params))
+                self.animation_task = asyncio.create_task(
+                    explode_animation.run_explode(
+                        self.govee_device,
+                        params,
+                        lambda: self.is_animating,
+                        self.animation_duration,
+                        self.animation_start_time,
+                    )
+                )
             elif animation_type == "Breath":
-                asyncio.create_task(self.run_breath_animation(params))
+                self.animation_task = asyncio.create_task(
+                    breath_animation.run_breath(
+                        self.govee_device,
+                        params,
+                        lambda: self.is_animating,
+                        self.animation_duration,
+                        self.animation_start_time,
+                    )
+                )
             elif animation_type == "Segment Pulse":
-                asyncio.create_task(self.run_segment_pulse_animation(params))
+                self.animation_task = asyncio.create_task(
+                    segment_pulse_animation.run_segment_pulse(
+                        self.govee_device,
+                        params,
+                        lambda: self.is_animating,
+                        self.animation_duration,
+                        self.animation_start_time,
+                    )
+                )
         elif not self.govee_device:
             QMessageBox.warning(self, "Animation", "Govee device not connected.")
         elif self.is_animating:
