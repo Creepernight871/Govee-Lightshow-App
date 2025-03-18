@@ -108,7 +108,7 @@ class SolidSegmentControls(QWidget):
         layout.addWidget(QLabel("Brightness:"))
         layout.addWidget(self.brightness_spinbox)
 
-        self.apply_button = QPushButton("Apply Segment Color")
+        self.apply_button = QPushButton("Test Segment Color")
         self.apply_button.clicked.connect(self.apply_segment_color)
         layout.addWidget(self.apply_button)
 
