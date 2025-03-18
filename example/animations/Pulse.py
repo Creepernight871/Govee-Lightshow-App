@@ -8,7 +8,7 @@ async def run_pulse(govee_device, params, is_animating_flag, animation_duration,
         pulse_interval = 60 / speed_bpm / 2
 
         while is_animating_flag() and (asyncio.get_event_loop().time() - animation_start_time < animation_duration):
-            await govee_device.set_color_rgb(color[0], color[1], color[2])
+            await govee_device.set_rbg_color(red=color[0], green=color[1], blue=color[2])
             await asyncio.sleep(pulse_interval)
             await govee_device.set_color_rgb(color=(0, 0, 0))
             await asyncio.sleep(pulse_interval)
