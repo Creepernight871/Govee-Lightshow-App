@@ -338,7 +338,7 @@ class AnimationControls(QWidget):
 
             if animation_type == "Pulse":
                 self.animation_task = asyncio.create_task(
-                    pulse_animation.run_pulse(
+                    pulse.run_pulse(
                         self.govee_device,
                         params,
                         lambda: self.is_animating,
@@ -348,7 +348,7 @@ class AnimationControls(QWidget):
                 )
             elif animation_type == "Wave":
                 self.animation_task = asyncio.create_task(
-                    wave_animation.run_wave(
+                    wave.run_wave(
                         self.govee_device,
                         params,
                         lambda: self.is_animating,
@@ -358,7 +358,7 @@ class AnimationControls(QWidget):
                 )
             elif animation_type == "Implode":
                 self.animation_task = asyncio.create_task(
-                    implode_animation.run_implode(
+                    implode.run_implode(
                         self.govee_device,
                         params,
                         lambda: self.is_animating,
@@ -368,7 +368,7 @@ class AnimationControls(QWidget):
                 )
             elif animation_type == "Explode":
                 self.animation_task = asyncio.create_task(
-                    explode_animation.run_explode(
+                    explode.run_explode(
                         self.govee_device,
                         params,
                         lambda: self.is_animating,
@@ -378,7 +378,7 @@ class AnimationControls(QWidget):
                 )
             elif animation_type == "Breath":
                 self.animation_task = asyncio.create_task(
-                    breath_animation.run_breath(
+                    breath.run_breath(
                         self.govee_device,
                         params,
                         lambda: self.is_animating,
@@ -388,7 +388,7 @@ class AnimationControls(QWidget):
                 )
             elif animation_type == "Segment Pulse":
                 self.animation_task = asyncio.create_task(
-                    segment_pulse_animation.run_segment_pulse(
+                    segmentPulse.run_segment_pulse(
                         self.govee_device,
                         params,
                         lambda: self.is_animating,
@@ -407,12 +407,3 @@ class AnimationControls(QWidget):
             self.animation_task.cancel()
         self.start_button.setEnabled(True)
         self.stop_button.setEnabled(False)
-
-    async def run_pulse_animation(self, params):
-        try:
-            color = params.get("color", (255, 0, 0))  # Default color
-            speed_bpm = params.get("speed", 60)
-            pulse_interval = 60 / speed_bpm / 2
-
-            while self.is_animating and (asyncio.get_event_loop().time() - self.animation_start_time < self.animation_duration):
-                await self.gove
