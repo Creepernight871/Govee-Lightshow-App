@@ -60,7 +60,7 @@ class SolidColorControls(QWidget):
         layout.addWidget(QLabel("Brightness:"))
         layout.addWidget(self.brightness_spinbox)
 
-        self.apply_button = QPushButton("Apply Solid Color")
+        self.apply_button = QPushButton("Test Solid Color")
         self.apply_button.clicked.connect(self.apply_solid_color)
         layout.addWidget(self.apply_button)
 
@@ -104,7 +104,7 @@ class SolidSegmentControls(QWidget):
 
         self.brightness_spinbox = QSpinBox()
         self.brightness_spinbox.setRange(0, 100)
-        self.brightness_spinbox.setValue(50)
+        self.brightness_spinbox.setValue(100)
         layout.addWidget(QLabel("Brightness:"))
         layout.addWidget(self.brightness_spinbox)
 
@@ -179,15 +179,18 @@ class AnimationControls(QWidget):
 
         # Start/Stop Buttons
         button_layout = QHBoxLayout()
-        self.start_button = QPushButton("Start Animation")
+        self.start_button = QPushButton("Test Animation")
         self.start_button.clicked.connect(self.start_animation)
         button_layout.addWidget(self.start_button)
+      
+        """
         self.stop_button = QPushButton("Stop Animation")
         self.stop_button.clicked.connect(self.stop_animation)
         self.stop_button.setEnabled(False)
         button_layout.addWidget(self.stop_button)
         layout.addLayout(button_layout)
-
+        """
+        
         self.animation_timer = QTimer(self)
         self.animation_timer.timeout.connect(self.run_next_frame)
 
@@ -231,6 +234,7 @@ class AnimationControls(QWidget):
         self.animation_controls_layout.addWidget(self.wave_color_controls)
 
         # Speed Input
+        """
         speed_layout = QHBoxLayout()
         speed_label = QLabel("Speed:")
         self.wave_speed_spinbox = QSpinBox()
@@ -239,7 +243,7 @@ class AnimationControls(QWidget):
         speed_layout.addWidget(speed_label)
         speed_layout.addWidget(self.wave_speed_spinbox)
         self.animation_controls_layout.addLayout(speed_layout)
-
+        
         # Direction Selection
         direction_layout = QHBoxLayout()
         direction_label = QLabel("Direction:")
@@ -248,7 +252,7 @@ class AnimationControls(QWidget):
         direction_layout.addWidget(direction_label)
         direction_layout.addWidget(self.wave_direction_combo)
         self.animation_controls_layout.addLayout(direction_layout)
-
+        """
     def setup_implode_explode_controls(self):
         # Color Input
         self.inout_color_controls = ColorControls(label="Color", initial_color="255,0,255")
@@ -328,8 +332,6 @@ class AnimationControls(QWidget):
     async def start_animation(self):
         if self.govee_device and not self.is_animating:
             self.is_animating = True
-            self.start_button.setEnabled(False)
-            self.stop_button.setEnabled(True)
             params = self.get_animation_params()
             animation_type = params['type']
             self.animation_duration = params['duration']
