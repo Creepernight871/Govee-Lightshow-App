@@ -20,9 +20,10 @@ async def run_pulse(govee_device, params, is_animating_flag, animation_duration,
             else:
                 #decreasing brightness
                 brightness = 100 - int((cycle_time / (pulse_interval / 2) / (pulse_interval / 2)) * 100)
+                
             await govee_device.set_rbg_color(red=color[0], green=color[1], blue=color[2])
-            await govee_device.set_brightness(brightness=brightness)
-            await asyncio.sleep(0.01) # smoother transition delay
+            await govee_device.set_brightness(brightness)
+            await asyncio.sleep(0.02) # smoother transition delay
     except asyncio.CancelledError:
         pass
     except Exception as e:
