@@ -12,6 +12,7 @@ class AudioControlWidget(QWidget):
         super().__init__(parent)
         self.player = None
         layout = QHBoxLayout(self)
+        self.audio_data = None # Newly Added Line
 
         # Play Button
         self.play_button = QPushButton()
@@ -56,6 +57,15 @@ class AudioControlWidget(QWidget):
         self.player.playbackPaused.connect(self._update_play_pause_buttons)
         self.player.playbackStopped.connect(self._reset_buttons)
         self._update_duration_label()
+
+    def set_audio_data(self, audio_data):  # This is the added method
+        """Sets the audio data (time series and sample rate)."""
+        self.audio_data = audio_data
+
+    def get_audio_data(self):
+        """Returns the audio data."""
+        return self.audio_data
+
 
     def _toggle_play(self):
         if self.player:
