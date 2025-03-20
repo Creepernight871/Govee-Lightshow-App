@@ -318,7 +318,31 @@ class MainWindow(QMainWindow):
         self.turn_off_button.clicked.connect(self.turn_device_off)
         govee_group_layout.addWidget(self.turn_off_button)
 
-        layout.addLayout(govee_group_layout)
+        # Added Controls for Debugging
+        # Individual animation buttons
+        self.test_wave_button = QPushButton("Test Wave")
+        self.test_wave_button.clicked.connect(self.test_wave_animation)
+        govee_group_layout.addWidget(self.test_wave_button)
+
+        self.test_solid_button = QPushButton("Test Solid")
+        self.test_solid_button.clicked.connect(self.test_solid_animation)
+        govee_group_layout.addWidget(self.test_solid_button)
+
+        self.set_white_button = QPushButton("Set White")
+        self.set_white_button.clicked.connect(self.set_white)
+        govee_group_layout.addWidget(self.set_white_button)
+
+        self.brightness_slider = QSlider(Qt.Orientation.Horizontal)
+        self.brightness_slider.setMinimum(0)
+        self.brightness_slider.setMaximum(100)
+        self.brightness_slider.setValue(50)  # Default brightness
+        self.brightness_slider.valueChanged.connect(self.set_brightness)
+        govee_group_layout.addWidget(QLabel("Brightness:"))
+        govee_group_layout.addWidget(self.brightness_slider)
+
+        govee_group_box.setLayout(govee_group_layout)
+        layout.addWidget(govee_group_box)
+
 
     def open_lightshow_editor(self):
         if not self.lightshow_editor_window or not self.lightshow_editor_window.isVisible():
@@ -385,6 +409,48 @@ class MainWindow(QMainWindow):
             print(f"Turned off device: {self.device}")
         else:
             print("No device selected to turn off.")
+
+    @asyncSlot()
+    async def test_wave_animation(self):
+        if self.device:
+            animation_params = {
+                "color": (255, 0, 0),
+                "speed": 120,
+                "direction": "left"
+            }
+            is_animating_flag = lambda: True
+            await self.device.start_custom_pattern(pattern_name="Wave", is_animating_flag=is_animating_flag, animation_duration=5, animation_params=animation_params)
+
+        else:
+            print("No device selected to test Wave animation.")
+
+    @asyncSlot()
+    async def test_solid_animation(self):
+        if self.device:
+            animation_params = {
+                "color": (0, 255, 0),
+            }
+            is_animating_flag = lambda: True
+            await self.device.start_custom_pattern(pattern_name="Solid", is_animating_flag=is_animating_flag, animation_duration=5, animation_params=animation_params)
+        else:
+            print("No device selected to test Solid animation.")
+
+    @asyncSlot()
+    async def set_white(self):
+        if self.device:
+            await self.device.set_color_temp(2500)
+            print(f"Set device {self.device} to white.")
+        else:
+            print("No device selected to set white.")
+
+    @asyncSlot()
+    async def set_brightness(self, brightness):
+        if self.device:
+            await self.device.set_brightness(brightness)
+            print(f"Set brightness of device {self.device} to {brightness}")
+        else:
+            print("No device selected to set brightness.")
+
 
 def main():
     app = QApplication(sys.argv)
