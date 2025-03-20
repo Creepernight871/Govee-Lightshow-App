@@ -243,10 +243,10 @@ class LightshowEditorWindow(QMainWindow):
 
         # Bottom Section: Audio Timeline
         bottom_layout = QVBoxLayout()
-        self.timeline_view = LightshowTimeline(self)
+        self.timeline_view = LightshowTimeline(self)  # Use your existing LightshowTimeline
         bottom_layout.addWidget(self.timeline_view)
 
-        # Assuming AudioControlWidget needs to interact with the audio player
+        # Use your existing AudioControlWidget
         self.control_widget = AudioControlWidget()
         bottom_layout.addWidget(self.control_widget)
 
@@ -258,20 +258,28 @@ class LightshowEditorWindow(QMainWindow):
 
         main_layout.addLayout(bottom_layout)
 
+        # Connect signals from AudioControlWidget to player
+        self.control_widget.playClicked.connect(self.player.play)
+        self.control_widget.pauseClicked.connect(self.player.pause)
+        self.control_widget.stopClicked.connect(self.player.stop)
+        self.control_widget.positionChanged.connect(self.player.set_position)
+
     def load_audio_file(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "Load Audio File", "", "Audio Files (*.mp3 *.wav)")
         if file_path:
             print(f"Loading audio file: {file_path}")
             # Load audio using the audio loader
-            audio_data = load_audio(file_path)
-            if audio_data:
-                self.player.load_audio(audio_data)
+            audio_info = load_audio(file_path)  # Use your existing load_audio
+            if audio_info:
+                self.player.load_audio(audio_info)
                 # Update the timeline view with the audio information
-                self.timeline_view.setSceneRect(0, 0, audio_data['duration'] * 10, 100) # Example scaling
-                # Connect the control widget to the player
+                self.timeline_view.set_duration(audio_info['duration'])  # Use your LightshowTimeline's set_duration
                 self.control_widget.set_player(self.player)
+                self.control_widget.set_audio_data(audio_info) # Pass the audio data to the control widget
+
             else:
                 print("Error loading audio file.")
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
