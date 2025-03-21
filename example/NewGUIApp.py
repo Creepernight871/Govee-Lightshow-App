@@ -8,9 +8,9 @@ from PyQt6.QtCore import Qt, QRectF
 from PyQt6.QtGui import QDrag, QPixmap, QPainter, QColor, QDragEnterEvent, QDropEvent, QBrush
 from qasync import QEventLoop, asyncSlot
 from govee_local_api import GoveeController, GoveeDevice, GoveeLightFeatures
-from Audio.audio_loader import load_audio
-from Audio.audio_timeline import AudioTimelineView, AudioControlWidget
-from Audio.audio_player import AudioPlayer
+from audio.loader import load_audio
+from audio.timeline import AudioTimelineView, AudioControlWidget
+from audio.player import AudioPlayer
 from Controls import SolidColorControls, SolidSegmentControls, AnimationControls, ColorControls
 
 class LightSequenceItem(QPushButton):  # Inherit from QPushButton for box look
